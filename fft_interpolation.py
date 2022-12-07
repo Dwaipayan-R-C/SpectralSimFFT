@@ -2,15 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # odd dimension for simplicity
-n    = 10                                           # Discrete samples
-npad = 300                                          # Padding size
+n    = 50                                           # Discrete samples
+npad = 500                                          # Padding size
 duration = 2*np.pi                                  # L (Total length)
 x    = np.arange(0., duration, duration/n)          # Sample array (spatial)
 xpad = np.arange(0., duration, duration/npad)       # Padding array
 
 # Function definition
-f = np.sin(2*x) + np.cos(5*x)
-f_pad = np.sin(2*xpad) + np.cos(5*xpad)
+f = 3*np.sin(2*x) 
+f_pad = 3*np.sin(2*xpad) 
 
 # FFT transformation & interpolation
 f_fwd = np.fft.fft(f)
@@ -58,9 +58,15 @@ kappa = np.fft.fftshift(kappa)
 dfft_2derv = kappa*(1j)*dfFDF
 dfft_2derv = np.real(np.fft.ifft(dfft_2derv))*npad/n
 
+# Calculaate second derivative using Finite diff
+kappa = (2*np.pi/duration)*np.arange(0,npad)
+D = (np.exp((1j)*kappa*(duration/npad))-2+np.exp(-(1j)*kappa*(duration/npad)))/(duration/npad)**2
+dfFDF_2=D*f_fwd_pad
+second_derivative = np.real(np.fft.ifft(dfFDF_2))*npad/n
+
 
 fig,ax=plt.subplots(2,3,figsize=(16, 8))
-fig.suptitle("Fourier transform analysis for Sin(2x) + Cos(10x)", fontweight="bold")
+fig.suptitle("Fourier transform analysis for 3*Sin(2x)", fontweight="bold")
 
 # Plotting interpolation result
 ax[0,0].plot(x,f,'b*')
@@ -75,8 +81,8 @@ ax[0,1].legend(['Fourier derivative', 'Finite difference'])
 ax[0,1].set_title('Fourier derivative vs Finite difference derivative')
 
 
-ax[1,1].plot(xpad,dfhat.real)
-ax[1,1].set_title("Fourier derivative (Reciprocal space)")
+# ax[1,1].plot(xpad,dfhat.real)
+# ax[1,1].set_title("Fourier derivative (Reciprocal space)")
 
 # Plot Fourier derivative using Finite diff in Reciprocal space
 # We see the difference because Kappa is not shifted in this method
@@ -85,8 +91,8 @@ ax[1,2].set_title("Fourier derivative using finite difference (Reciprocal space)
 ax[1,2].plot(xpad,dfFDF.real)
 
 # Plot Fourier derivative using Finite difference
-ax[1,0].plot(xpad,np.real(dfFFT),'o',color='red')
-ax[1,0].plot(xpad,np.real(derivative), '-',color='b')
+ax[1,0].plot(xpad,np.real(derivative),'o',color='red')
+ax[1,0].plot(xpad,np.real(dfFD), '-',color='b')
 ax[1,0].legend(['Fourier derivative', 'Finite derivative'])
 ax[1,0].set_title("Plots of Fourier derivative using Finite difference")
 
@@ -95,8 +101,12 @@ ax[0,2].plot(xpad, dfft_2derv.real,'o',color='red')
 ax[0,2].plot(xpad, dfFD_2.real, '-',color='b')
 ax[0,2].legend(['Fourier second derivative', 'Finite second derivative'])
 ax[0,2].set_title("Second derivative plot")
+
+
+ax[1,1].plot(xpad, second_derivative.real)
+ax[1,1].set_title("Plots of Fourier second derivative using Finite difference")
 fig.tight_layout()
-fig.savefig('plots//exercise_3//Fourier_derivatives_1.png')
+fig.savefig('plots//exercise_3//Fourier_derivatives.png')
 plt.show()
 
 
