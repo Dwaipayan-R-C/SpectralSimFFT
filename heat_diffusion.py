@@ -35,16 +35,20 @@ sources = np.zeros_like(T)
 # Fourier definition of Fundamental frequency
 u_hat = np.fft.fft(T).real
 kappa = 2*np.pi*np.fft.fftfreq(nx,L/(nx-1)).real
-
+# source_T = np.fft.fft(sources).real
+# source_T = np.fft.fftshift(source_T)
 # Plot info
 fig,ax = plt.subplots(1,2, figsize=(15, 8))
-
+t=0
 # Time propagation
 for t in range(nt):
+# while(u_hat[t]!=u_hat[t-1]):
+    t+=1
     T = time_marching(T, alpha, sources, dx, dt)
     
     # u_hat(k,t+del_t) = -D*K**2*u_hat(k,t)
-    u_hat[:] = u_hat[:]*(1-alpha*dt*kappa**2)    
+    u_hat[:] = u_hat[:]*(1-alpha*dt*kappa**2) 
+    # u_hat[:] = u_hat[:]*(1-alpha*dt*kappa**2) + source_T*dt
     
     if t % (nt // 10) == 0:
         ax[0].plot(x, T, '-', label=f'$t={t*dt}$')
@@ -59,5 +63,5 @@ for t in range(nt):
         
         
 fig.tight_layout()
-fig.savefig('plots//exercise_4//Heat_transport.png')
+# fig.savefig('plots//exercise_4//Heat_transport.png')
 plt.show()
