@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from rb import wave_number as WN
+from rb import Rayleigh_functions as RayFunc
 from matplotlib.animation import FuncAnimation
 import matplotlib.gridspec as gridspec
 
@@ -9,8 +9,8 @@ def RayleighK(low,high,plot=False):
     
     if (plot==True):
         fig1=plt.figure(1)
-        k,Ra=WN.WaveRayleigh(low,high).RaSimple()
-        Ra_real = WN.WaveRayleigh(low,high).RaReal()
+        k,Ra=RayFunc.WaveRayleigh(low,high).RaSimple()
+        Ra_real = RayFunc.WaveRayleigh(low,high).RaReal()
         kc=k[np.argmin(Ra)]
         Rc=np.min(Ra)
         print("Critical Rayleigh number: ", Rc)
@@ -29,10 +29,10 @@ def RayleighK(low,high,plot=False):
 
 
 def StaticSim(length,n,θn,low,high, plotStatic=False):
-    k,Ra=WN.WaveRayleigh(low,high).RaSimple()
+    k,Ra=RayFunc.WaveRayleigh(low,high).RaSimple()
     km = k[np.argmin(Ra)+1]
     Rm = Ra[np.argmin(Ra)+1]
-    U,V,W,UZ,VZ,WZ,θxy,θxz,X,Y,XZ,ZX = WN.StaticRayleigh(length,n,θn).Ansatz(Rm,km)
+    U,V,W,UZ,VZ,WZ,θxy,θxz,X,Y,XZ,ZX = RayFunc.StaticRayleigh(length,n,θn).Ansatz(Rm,km)
     
     if(plotStatic==True):  
         
@@ -73,7 +73,7 @@ def DynamicSim(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt,save_every, anim=False,pl
     v_xy=np.copy(θxy)
     w_xy=np.copy(θxy)
     θxy = np.fft.fftshift(np.fft.fft2(np.random.rand(Nx, Ny)))
-    RayDyn = WN.DynamicRayleigh(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt)
+    RayDyn = RayFunc.DynamicRayleigh(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt)
     
     #region Plot_definition
     # Theta Plot definition
