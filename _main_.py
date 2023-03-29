@@ -6,7 +6,13 @@ import matplotlib.gridspec as gridspec
 
 
 def RayleighK(low,high,plot=False):
-    
+    """Code for Rayleigh number vs wave vector
+
+    Args:
+        low (float): lower limit
+        high (float): higher limit
+        plot (bool, optional): For plotting. Defaults to False.
+    """
     if (plot==True):
         fig1=plt.figure(1)
         k,Ra=RayFunc.WaveRayleigh(low,high).RaSimple()
@@ -29,6 +35,15 @@ def RayleighK(low,high,plot=False):
 
 
 def StaticSim(length,n,θn,low,high, plotStatic=False):
+    """For plotting the static simulation
+
+    Args:
+        length (int): Domain length
+        n (int): number of basis functions
+        low (float): lower limit
+        high (float): higher limit
+        plotStatic (bool, optional): For plotting. Defaults to False.
+    """
     k,Ra=RayFunc.WaveRayleigh(low,high).RaSimple()
     km = k[np.argmin(Ra)+1]
     Rm = Ra[np.argmin(Ra)+1]
@@ -66,7 +81,27 @@ def StaticSim(length,n,θn,low,high, plotStatic=False):
        
     
 def DynamicSim(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt,save_every, anim=False,plots=True):
+    """For simulating the time marching algorithm for non-linear system
+
+    Args:
+        Ra (float): Rayleigh number
+        Nx (float): Number of nodes along x
+        Ny (float): Number of nodes along y
+        Nz (float): Number of nodes along z
+        Lx (int): Domain length along x
+        Ly (int): Domain length along y
+        Lz (int): Domain length along z
+        n (int): number of basis functions
+        timescale (int): timescale
+        dt (float): timestep
+        save_every (int): save every for plotting purpose
+        anim (bool, optional): For Thermal plot. Defaults to False.
+        plots (bool, optional): For velocity plot. Defaults to True.
+    """
+    
     global θxy,u_xy,v_xy,w_xy,u,v,w,anim_im,anim_im1, anim_u,anim_v,anim_w
+    
+    
     # Initialize Variables to plot (Fourier space)
     θxy=np.zeros((Nx, Ny), dtype=np.complex128)
     u_xy=np.copy(θxy)
@@ -125,7 +160,8 @@ def DynamicSim(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt,save_every, anim=False,pl
         fig_3.suptitle(f'Temp(θ) vs Time(t) at Ra={Ra} and t={t*dt}') 
         if (t%save_every==0):
             fig_3.savefig(f'plots/Rayleigh/temp/t_{t}.png')
-      
+    
+    # Plot velocity variant
     def update_velocity(t):
         print(f'{t+1}//{timescale}', end="\r")  
         global θxy,u_xy,v_xy,w_xy,u,v,w,anim_u,anim_v,anim_w               

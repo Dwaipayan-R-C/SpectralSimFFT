@@ -1,6 +1,7 @@
 import numpy as np
 
-class WaveRayleigh:    
+class WaveRayleigh:  
+    """Class for simulating Task1- Ra vs K"""  
     def __init__(self, l_lim,h_lim):
         self.low = l_lim
         self.high = h_lim
@@ -13,6 +14,8 @@ class WaveRayleigh:
         return [self.k,[(np.pi**2 + k**2)**3 / k**2 for k in self.k]]
 
 class StaticRayleigh:
+    """Static simulation
+    """
     def __init__(self,length,n,θn):
         self.length = length        
         self.n = n
@@ -25,6 +28,15 @@ class StaticRayleigh:
         self.θn=θn
            
     def Ansatz(self,R,km):
+        """Define all the ansatz for static code
+
+        Args:
+            R (float): R>Rc
+            km (float): km>kc
+
+        Returns:
+            list: returns a list of variables like velocity and temp along xy,xz,yz direction. 
+        """
         kxc = 2 * np.pi / self.length * km
         kzc = 2 * np.pi / self.length * self.n
         wn=R* kzc**2 / (-self.n**2 * np.pi**2 - kzc**2)**2
