@@ -16,7 +16,7 @@ def Task2():
     
 def Task3():
     # Variabe definition
-    Ra=1000
+    Ra=3000
     Nx=100
     Ny=100
     Nz=50
