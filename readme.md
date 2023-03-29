@@ -5,7 +5,7 @@ This project is developed during a course at [IMTEK-Simulation](https://www.imte
 * Thermal propagation:<br/>
 Here, a Rayleigh Benard  thermal propagation simulation is presented <br/>
 <p align="center">
-  <img src="/plots/temp_ani.gif" alt="animated" width="300"/>     
+  <img src="/plots/temp_ani.gif" alt="animated" width="600"/>     
 </p>
 
 * Velocity propagation at Different Rayleigh:<br/>
@@ -17,6 +17,6 @@ Here we aim to present how three components of velocity induced by non-linear te
 * Static Simulation:<br/>
 Here, we present a steady state simulation.<br/>
 <p align="center">
-  <img src="/plots/static.PNG" width="600"/>
+  <img src="/plots/static.PNG" width="500"/>
 </p> 
 
