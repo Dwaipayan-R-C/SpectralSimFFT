@@ -57,6 +57,8 @@ def StaticSim(length,n,θn,low,high, plotStatic=False):
         temp = ax2.contourf(X[:,0:45], Y[:,0:45], θxy[:,0:45], cmap='inferno', levels=np.linspace(-1, 1, 50))
         # temp = ax2.contourf(X[:,0:23], Y[:,0:23], Theta[:,0:23], cmap='inferno', levels=np.linspace(-1, 1, 21))
         color=plt.colorbar(temp)
+        ax1.set_title('Velocity profile')
+        ax2.set_title('Magnitude of θ deviation')
         fig.suptitle('Convective pattern at XY plane')
         ax1.set_xlabel('x')
         ax1.set_ylabel('y')
@@ -71,12 +73,15 @@ def StaticSim(length,n,θn,low,high, plotStatic=False):
         # temp = ax4.contourf(X[:,0:23], Y[:,0:23], Theta[:,0:23], cmap='inferno', levels=np.linspace(-1, 1, 21))
         color=plt.colorbar(temp)
         fig1.suptitle('Convective pattern at XZ plane')
+        ax3.set_title('Velocity profile')
+        ax4.set_title('Magnitude of θ deviation')
         ax3.set_xlabel('x')
         ax3.set_ylabel('z')
         ax4.set_xlabel('x')
         ax4.set_ylabel('z')
         fig1.tight_layout()
-        
+        fig.savefig('plots/Rayleigh/static/alongxy.png')
+        fig1.savefig('plots/Rayleigh/static/alongxz.png')
         plt.show()
        
     
@@ -159,7 +164,7 @@ def DynamicSim(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt,save_every, anim=False,pl
         anim_im1.autoscale()
         fig_3.suptitle(f'Temp(θ) vs Time(t) at Ra={Ra} and t={t*dt}') 
         if (t%save_every==0):
-            fig_3.savefig(f'plots/Rayleigh/temp/t_{t}.png')
+            fig_3.savefig(f'plots/Rayleigh/temp/t_{Ra}_{t}.png')
     
     # Plot velocity variant
     def update_velocity(t):
@@ -175,13 +180,14 @@ def DynamicSim(Ra,Nx,Ny,Nz,Lx,Ly,Lz,n,timescale,θn,dt,save_every, anim=False,pl
         anim_w.autoscale()
         fig_4.suptitle(f'Velocity marching at Ra={Ra}and t={t*dt}')
         if (t%save_every==0):
-            fig_4.savefig(f'plots/Rayleigh/velocity/t_{t}.png')
+            fig_4.savefig(f'plots/Rayleigh/velocity/v_{Ra}_{t}.png')
       
     if(anim==True):
         ani_t = FuncAnimation(fig_3, updateθ, repeat=True,frames=70, interval=500) 
         ani_t.save('plots/Rayleigh/temp/temp_ani.gif')   
-    elif(plots==True):
-        ani_v = FuncAnimation(fig_4, update_velocity, frames=range(timescale), interval=1, repeat=False, cache_frame_data=True)        
+    elif(plots==True):        
+        ani_v = FuncAnimation(fig_4, update_velocity, frames=range(timescale), interval=1, repeat=False, cache_frame_data=True)    
+        ani_v.save('plots/Rayleigh/velocity/vel_ani.gif')    
     # plt.show() 
             
     
